@@ -7,7 +7,6 @@ const gameSchema = new Schema(
           img: { type: String, required: true },
           title: { type: String, required: true },
           releaseYear: { type: Number, required: false },
-          developer: { type: String, required: true },
           genre: {
                type: String,
                required: true,

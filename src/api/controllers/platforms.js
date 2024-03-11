@@ -6,7 +6,7 @@ const getPlatforms = async (req, res, next) => {
           const allPlatforms = await Platform.find().populate("games");
           return res.status(200).json(allPlatforms);
      } catch (error) {
-          return res.status(404).json("Ha fallado la recuperación del juego")
+          return res.status(404).json("Ha fallado la recuperación de la plataforma", error)
      }
 };
 
@@ -18,7 +18,7 @@ const getPlatformsById = async (req, res, next) => {
 
           return res.status(200).json(platformById);
      } catch (error) {
-          return res.status(404).json("Ha fallado la recuperación del juego por ID")
+          return res.status(404).json("Ha fallado la recuperación de la plataforma , error)por ID")
      }
 }
 
@@ -31,7 +31,7 @@ const postPlatforms = async (req, res, next) => {
           const platformSaved = await platform.save();
           return res.status(200).json(platformSaved);
      } catch (error) {
-          return res.status(404).json("Ha fallado la creación del juego")
+          return res.status(404).json("Ha fallado la creación de la plataforma", error)
      }
 }
 
@@ -49,7 +49,7 @@ const updatePlatforms = async (req, res, next) => {
 
           return res.status(200).json(platformUpdated);
      } catch (error) {
-          return res.status(404).json("Ha fallado la actualización del juego")
+          return res.status(404).json("Ha fallado la actualización de la plataforma", error);
      }
 }
 
@@ -62,7 +62,7 @@ const deletePlatforms = async (req, res, next) => {
 
           return res.status(200).json(platformDeleted);
      } catch (error) {
-          return res.status(404).json("Ha fallado la eliminación del juego")
+          return res.status(404).json("Ha fallado la eliminación de la juego")
      }
 }
 

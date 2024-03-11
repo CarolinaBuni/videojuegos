@@ -60,9 +60,6 @@ const getGamesByYear = async (req, res, next) => {
      }
 }
 
-// //? GET BY DEVELOPER
-// const getGamesByDeveloper =
-
 
 //* CREATE
 const postGames = async (req, res, next) => {
