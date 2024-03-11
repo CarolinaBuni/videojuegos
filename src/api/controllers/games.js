@@ -24,7 +24,7 @@ const getGamesById = async (req, res, next) => {
 }
 
 
-//? GET BY PRICE
+//? GET BY PRICE (Menor que)
 const getGamesByPrice = async (req, res, next) => {
      try {
           const { price } = req.params;
@@ -48,7 +48,7 @@ const getGamesByGenre = async (req, res, next) => {
      }
 }
 
-//? GET BY YEAR
+//? GET BY YEAR (Mayor que)
 const getGamesByYear = async (req, res, next) => {
      try {
           const { releaseYear } = req.params;
