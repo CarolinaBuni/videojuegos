@@ -6,9 +6,10 @@ const gameSchema = new Schema(
      {
           img: { type: String, required: true },
           title: { type: String, required: true },
-          releaseYear: { type: Number, required: false },
+          releaseYear: { type: Number },
           genre: {
                type: String,
+               required: true,
                enum: [
                     "Action",
                     "Adventure",
