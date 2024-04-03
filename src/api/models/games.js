@@ -9,7 +9,6 @@ const gameSchema = new Schema(
           releaseYear: { type: Number, required: false },
           genre: {
                type: String,
-               required: true,
                enum: [
                     "Action",
                     "Adventure",
