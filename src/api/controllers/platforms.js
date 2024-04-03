@@ -1,3 +1,4 @@
+const { deleteFile } = require( "../../utils/deleteFile" );
 const Platform = require("../models/platforms")
 
 //* READ
@@ -28,6 +29,9 @@ const getPlatformsById = async (req, res, next) => {
 const postPlatforms = async (req, res, next) => {
      try {
           const platform = new Platform(req.body);
+          if(req.file) {
+               platform.img = req.file.path;
+          }
           const platformSaved = await platform.save();
           return res.status(200).json(platformSaved);
      } catch (error) {
@@ -39,17 +43,26 @@ const postPlatforms = async (req, res, next) => {
 //* UPDATE
 const updatePlatforms = async (req, res, next) => {
      try {
+          console.log("hola");
           const { id } = req.params;
           const oldPlatform = await Platform.findById(id);
           const newPlatform = new Platform(req.body);
 
           newPlatform._id = id;
-          newPlatform.games = [...oldPlatform.games, ...req.body.games];
+          const games = req.body.games || [];
+
+          newPlatform.games = [...oldPlatform.games, ...games];
+
+          if(req.file) {
+               newPlatform.img = req.file.path;
+               deleteFile(oldPlatform.img);
+          }
           const platformUpdated = await Platform.findByIdAndUpdate(id, newPlatform, { new: true });
 
           return res.status(200).json(platformUpdated);
      } catch (error) {
-          return res.status(404).json("Ha fallado la actualización de la plataforma", error);
+          console.log(error);
+          return res.status(404).json(error);
      }
 }
 
@@ -59,10 +72,11 @@ const deletePlatforms = async (req, res, next) => {
      try {
           const { id } = req.params;
           const platformDeleted = await Platform.findByIdAndDelete(id);
-
+          console.log(platformDeleted);
+          deleteFile(platformDeleted.img);
           return res.status(200).json(platformDeleted);
      } catch (error) {
-          return res.status(404).json("Ha fallado la eliminación de la juego")
+          return res.status(404).json("Ha fallado la eliminación de la plataforma")
      }
 }
 

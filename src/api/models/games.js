@@ -16,7 +16,7 @@ const gameSchema = new Schema(
                     "RPG",
                     "Shooter",
                     "Strategy",
-                    " Sports",
+                    "Sports",
                     "Racing",
                     "Fighting",
                     "Simulation",
@@ -31,6 +31,7 @@ const gameSchema = new Schema(
                ],
           },
           price: { type: Number, required: true },
+          verified: { type: Boolean, required: true, default: false }
      },
      {
           timestamps: true,

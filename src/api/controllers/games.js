@@ -1,9 +1,21 @@
+const { deleteFile } = require( "../../utils/deleteFile" );
 const Game = require( "../models/games" );
 
 //* READ
 const getGames = async (req, res, next) => {
      try {
-          const allGames = await Game.find();
+          const allGames = await Game.find({ verified: true });
+          return res.status(200).json(allGames);
+     } catch (error) {
+          return res.status(404).json("Ha fallado la recuperación del juego")
+     }
+};
+
+
+//! GET Juegos Admin
+const getGamesAdmin = async (req, res, next) => {
+     try {
+          const allGames = await Game.find({ verified: false });
           return res.status(200).json(allGames);
      } catch (error) {
           return res.status(404).json("Ha fallado la recuperación del juego")
@@ -65,6 +77,17 @@ const getGamesByYear = async (req, res, next) => {
 const postGames = async (req, res, next) => {
      try {
           const game = new Game(req.body);
+
+          if(req.file) {
+               game.img = req.file.path;
+          }
+
+          if(req.user.rol === "admin"){
+               game.verified = true;
+          } else {
+               game.verified = false;
+          }
+
           const gameSaved = await game.save();
           return res.status(200).json(gameSaved);
      } catch (error) {
@@ -78,8 +101,15 @@ const updateGames = async (req, res, next) => {
      try {
           const { id } = req.params;
           const newGame = new Game(req.body);
-
           newGame._id = id;
+
+          if(req.file) {
+               newGame.img = req.file.path;
+
+               const oldGame = await Game.findById(id);
+               deleteFile(oldGame.img);
+          }
+
           const gameUpdated = await Game.findByIdAndUpdate(id, newGame, { new: true });
 
           return res.status(200).json(gameUpdated);
@@ -94,6 +124,7 @@ const deleteGames = async (req, res, next) => {
      try {
           const { id } = req.params;
           const gameDeleted = await Game.findByIdAndDelete(id);
+          deleteFile(gameDeleted.img);
 
           return res.status(200).json(gameDeleted);
      } catch (error) {
@@ -103,4 +134,4 @@ const deleteGames = async (req, res, next) => {
 
 
 
-module.exports = { getGames, postGames, updateGames, deleteGames, getGamesById, getGamesByPrice, getGamesByGenre, getGamesByYear }; 
+module.exports = { getGames, postGames, updateGames, deleteGames, getGamesById, getGamesByPrice, getGamesByGenre, getGamesByYear, getGamesAdmin }; 
